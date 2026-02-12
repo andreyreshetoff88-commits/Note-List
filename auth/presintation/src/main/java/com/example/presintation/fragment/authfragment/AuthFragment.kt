@@ -1,9 +1,11 @@
 package com.example.presintation.fragment.authfragment
 
+import android.content.Context
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -61,7 +63,10 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
     }
 
     override fun initFields() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         binding.tvRegister.setOnClickListener {
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
             findNavController().navigate(R.id.registerBottomSheetFragment)
         }
         binding.etEnterEmail.addTextChangedListener {
@@ -91,6 +96,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
                 return@setOnClickListener
             }
 
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
             lifecycleScope.launch {
                 viewModel.loginUser(email = email, password = password)
             }

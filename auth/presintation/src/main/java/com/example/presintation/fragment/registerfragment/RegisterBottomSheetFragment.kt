@@ -88,7 +88,8 @@ class RegisterBottomSheetFragment : BaseBaseFragmentFragment<FragmentRegisterBot
         btnNext.setOnClickListener {
             if (checkFields()) {
                 if (passwordIsConfirm) {
-                    val imm = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view?.windowToken, 0)
 
                     val firstName = etEnterFirstName.text.toString().trim()
