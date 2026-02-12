@@ -1,0 +1,14 @@
+<resources>
+    <string name="next">Далее</string>
+    <string name="empty_field">Поеле обязательно для заполнения</string>
+    <string name="tv_label_enter_code">Мы отправили SMS с кодом проверк на ваш телефон:</string>
+    <string name="code_from_sms">Код из смс</string>
+    <string name="email_string">email</string>
+    <string name="password_string">Пароль</string>
+    <string name="registr_string">Зарегистрироваться</string>
+    <string name="no_akk_string">Ещё нет аккаунта?</string>
+    <string name="first_name_string">Имя</string>
+    <string name="last_name_string">Фамилия</string>
+    <string name="on_register_string">Регистрация</string>
+    <string name="confirm_password_string">Повторите пароль</string>
+</resources>

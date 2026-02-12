@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="main_toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">@color/orange</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="bottom_menu_current_room" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">@color/orange</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+</resources>

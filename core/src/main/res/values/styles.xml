@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="input_text" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxCornerRadiusBottomStart">20dp</item>
+        <item name="boxCornerRadiusBottomEnd">20dp</item>
+        <item name="boxCornerRadiusTopStart">20dp</item>
+        <item name="boxCornerRadiusTopEnd">20dp</item>
+        <item name="hintTextColor">@color/orange</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="errorEnabled">false</item>
+        <item name="errorIconDrawable">@drawable/ic_error</item>
+        <item name="errorIconTint">@color/box_error_color</item>
+        <item name="errorTextColor">@color/box_error_color</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="android:textColorHint">@color/dark_grey</item>
+        <item name="boxStrokeErrorColor">@color/box_error_color</item>
+        <item name="placeholderTextColor">@color/dark_grey</item>
+    </style>
+</resources>

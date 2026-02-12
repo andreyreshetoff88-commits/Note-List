@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_black">#292728</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="box_error_color">#FF3C3C</color>
+    <color name="dark_grey">#787878</color>
+    <color name="gray">#DADADA</color>
+    <color name="orange">#A08D5F</color>
+    <color name="text_color">#28B0A6</color>
+</resources>

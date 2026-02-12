@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_rounded_top"
+    android:paddingVertical="@dimen/default_indent"
+    tools:context=".fragment.registerfragment.RegisterBottomSheetFragment">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_fields"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/default_indent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/on_register_string"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/default_text_size"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlt_enter_first_name"
+            style="@style/input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_indent"
+            android:hint="@string/first_name_string">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_enter_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/default_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlt_enter_last_name"
+            style="@style/input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_indent"
+            android:hint="@string/last_name_string">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_enter_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/default_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlt_enter_email"
+            style="@style/input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_indent"
+            android:hint="@string/email_string">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_enter_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/default_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlt_enter_password"
+            style="@style/input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_indent"
+            android:hint="@string/password_string"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_input_box_stroke">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_enter_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/default_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlt_confirm_password"
+            style="@style/input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_indent"
+            android:hint="@string/confirm_password_string"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_input_box_stroke">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/default_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_indent"
+            android:backgroundTint="@color/orange"
+            android:drawableEnd="@drawable/ic_next"
+            android:text="@string/next"
+            android:textColor="@color/black"
+            android:textSize="@dimen/default_text_size" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
