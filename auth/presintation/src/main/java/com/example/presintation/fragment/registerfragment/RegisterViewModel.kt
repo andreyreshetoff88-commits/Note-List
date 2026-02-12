@@ -23,18 +23,20 @@ class RegisterViewModel @Inject constructor(
 
 
     suspend fun registerUser(userModel: UserModel, password: String) {
-        registerUserUseCase.execute(userModel = userModel, password = password).onEach { registerState ->
-            when (registerState) {
-                is Resource.Loading -> _viewState.value = State.Loading()
-                is Resource.Success -> {
-                    if (registerState.data == true) {
-                        Log.d("ololo", "registerUser: ${registerState.data}")
-                        _viewState.value = State.Success(data = true)
+        registerUserUseCase.execute(userModel = userModel, password = password)
+            .onEach { registerState ->
+                when (registerState) {
+                    is Resource.Loading -> _viewState.value = State.Loading()
+                    is Resource.Success -> {
+                        if (registerState.data == true) {
+                            Log.d("ololo", "registerUser: ${registerState.data}")
+                            _viewState.value = State.Success(data = true)
+                        }
                     }
-                }
 
-                is Resource.Error -> _viewState.value = State.Error(message = registerState.message)
-            }
-        }.launchIn(viewModelScope)
+                    is Resource.Error -> _viewState.value =
+                        State.Error(message = registerState.message)
+                }
+            }.launchIn(viewModelScope)
     }
 }

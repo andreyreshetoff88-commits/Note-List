@@ -1,17 +1,12 @@
 package com.example.data.storage
 
-import android.util.Log
 import com.example.core.Constants.NODE_USERS
 import com.example.data.models.UserModelDto
 import com.example.domain.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -55,7 +50,7 @@ class AuthStorageImpl @Inject constructor(
         emit(Resource.Loading())
         userModelDto.id = firebaseAuth.currentUser?.uid
         try {
-            val value = firebaseDatabase.child(NODE_USERS).child(userModelDto.id!!)
+            firebaseDatabase.child(NODE_USERS).child(userModelDto.id!!)
                 .setValue(userModelDto).await()
 
             emit(Resource.Success(data = true))
