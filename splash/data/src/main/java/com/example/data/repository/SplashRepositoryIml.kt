@@ -10,4 +10,10 @@ class SplashRepositoryIml @Inject constructor(private val firebaseAuth: Firebase
 //        firebaseAuth.signOut()
         return firebaseAuth.currentUser != null
     }
+
+    override fun checkVerifyEmail(): Boolean {
+        val user = firebaseAuth.currentUser
+        user?.reload()
+        return user?.isEmailVerified == true
+    }
 }

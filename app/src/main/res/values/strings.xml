@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Note List</string>
+    <string name="profile_string">Профиль</string>
+    <string name="groups_string">Группы</string>
 </resources>

@@ -8,11 +8,10 @@
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
-    <style name="bottom_menu_current_room" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+    <style name="main_bottom_menu" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:background">@color/orange</item>
-        <item name="android:elevation">0dp</item>
-        <item name="android:visibility">gone</item>
+        <item name="android:background">@drawable/bg_bottom_menu</item>
+        <item name="android:visibility">visible</item>
     </style>
 </resources>

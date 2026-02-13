@@ -1,0 +1,6 @@
+<resources>
+    <string name="almost_done_string">Почти готово!</string>
+    <string name="email_verify_message">Мы отправили письмо для подтверждения на ваш email. Откройте его и нажмите на ссылку внутри, чтобы активировать аккаунт. Не видите письмо? Проверьте «Спам» или отправьте его снова.</string>
+    <string name="resend_string">Отправить ещё раз</string>
+    <string name="resend_in_string">Отправить снова:</string>
+</resources>

@@ -46,7 +46,9 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":splash:presintation"))
     implementation(project(":auth:presintation"))
-    implementation(project(":groups:presentation"))
+    implementation(project(":groups:groups_presentation"))
+    implementation(project(":profile:profile_presentation"))
+    implementation(project(":verify_email:verify_email_presentation"))
 
     //hilt
     implementation(libs.hilt.android)

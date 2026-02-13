@@ -37,7 +37,11 @@ class AuthStorageImpl @Inject constructor(
             createNewUser(userModelDto).collect {
                 when (it) {
                     is Resource.Loading -> emit(Resource.Loading())
-                    is Resource.Success -> emit(Resource.Success(it.data))
+                    is Resource.Success -> {
+                        firebaseAuth.currentUser?.sendEmailVerification()?.await()
+                        emit(Resource.Success(it.data))
+                    }
+
                     is Resource.Error -> emit(Resource.Error(message = it.message))
                 }
             }

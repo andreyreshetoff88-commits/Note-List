@@ -2,17 +2,17 @@ package com.example.presintation.fragment.splashfragment
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.presintation.R
 import com.example.presintation.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kg.reshetoff.core.base.BaseFragment
-import androidx.core.net.toUri
-import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 
 @AndroidEntryPoint
 class SplashFragment : BaseFragment<FragmentSplashBinding>() {
@@ -34,9 +34,15 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             if (!viewModel.checkUser()) {
                 val uri = "notelist://auth".toUri()
                 findNavController().navigate(uri)
-            }else{
-                val uri = "notelist://groups".toUri()
-                findNavController().navigate(uri)
+            } else {
+                Log.d("ololo", "initFields: ${viewModel.checkVerifyEmail()}")
+                if (viewModel.checkVerifyEmail()) {
+                    val uri = "notelist://groups".toUri()
+                    findNavController().navigate(uri)
+                } else {
+                    val uri = "notelist://verify_email".toUri()
+                    findNavController().navigate(uri)
+                }
             }
         }, 3500)
     }

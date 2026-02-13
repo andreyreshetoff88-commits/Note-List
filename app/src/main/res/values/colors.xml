@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main">#292728</color>
     <color name="orange">#A08D5F</color>
+    <color name="menu_color">#343233</color>
+    <color name="unchecked_menu_item_color">#8A8889</color>
 </resources>

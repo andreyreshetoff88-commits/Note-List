@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/verify_email_nav_graph"
+    app:startDestination="@id/verifyEmailFragment">
+
+    <fragment
+        android:id="@+id/verifyEmailFragment"
+        android:name="com.example.verify_email_presentation.fragment.verifyemailfragment.VerifyEmailFragment"
+        android:label="fragment_verify_email"
+        tools:layout="@layout/fragment_verify_email" />
+    <deepLink app:uri="notelist://verify_email" />
+</navigation>

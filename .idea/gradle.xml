@@ -17,13 +17,21 @@
             <option value="$PROJECT_DIR$/auth/presintation" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/groups" />
-            <option value="$PROJECT_DIR$/groups/data" />
-            <option value="$PROJECT_DIR$/groups/domain" />
-            <option value="$PROJECT_DIR$/groups/presentation" />
+            <option value="$PROJECT_DIR$/groups/groups_data" />
+            <option value="$PROJECT_DIR$/groups/groups_domain" />
+            <option value="$PROJECT_DIR$/groups/groups_presentation" />
+            <option value="$PROJECT_DIR$/profile" />
+            <option value="$PROJECT_DIR$/profile/profile_data" />
+            <option value="$PROJECT_DIR$/profile/profile_domain" />
+            <option value="$PROJECT_DIR$/profile/profile_presentation" />
             <option value="$PROJECT_DIR$/splash" />
             <option value="$PROJECT_DIR$/splash/data" />
             <option value="$PROJECT_DIR$/splash/domain" />
             <option value="$PROJECT_DIR$/splash/presintation" />
+            <option value="$PROJECT_DIR$/verify_email" />
+            <option value="$PROJECT_DIR$/verify_email/verify_email_data" />
+            <option value="$PROJECT_DIR$/verify_email/verify_email_domain" />
+            <option value="$PROJECT_DIR$/verify_email/verify_email_presentation" />
           </set>
         </option>
       </GradleProjectSettings>
