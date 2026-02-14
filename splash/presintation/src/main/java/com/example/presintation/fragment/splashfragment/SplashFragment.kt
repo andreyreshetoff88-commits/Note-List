@@ -2,7 +2,6 @@ package com.example.presintation.fragment.splashfragment
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -35,7 +34,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                 val uri = "notelist://auth".toUri()
                 findNavController().navigate(uri)
             } else {
-                Log.d("ololo", "initFields: ${viewModel.checkVerifyEmail()}")
                 if (viewModel.checkVerifyEmail()) {
                     val uri = "notelist://groups".toUri()
                     findNavController().navigate(uri)

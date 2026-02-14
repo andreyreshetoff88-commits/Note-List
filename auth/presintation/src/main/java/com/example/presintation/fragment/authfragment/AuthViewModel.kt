@@ -3,6 +3,7 @@ package com.example.presintation.fragment.authfragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.State
+import com.example.domain.usecase.CheckVerifyUseCase
 import com.example.domain.usecase.LoginUserUseCase
 import com.example.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val loginUserUseCase: LoginUserUseCase
+    private val loginUserUseCase: LoginUserUseCase,
+    private val checkVerifyUseCase: CheckVerifyUseCase
 ) : ViewModel() {
     private var _viewState = MutableStateFlow<State<Boolean>>(State.Empty())
     val viewState: StateFlow<State<Boolean>> get() = _viewState
@@ -34,4 +36,6 @@ class AuthViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun checkVerifyEmail() = checkVerifyUseCase.execute()
 }

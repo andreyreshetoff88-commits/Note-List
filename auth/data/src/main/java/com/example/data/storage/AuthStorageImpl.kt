@@ -63,6 +63,12 @@ class AuthStorageImpl @Inject constructor(
         }
     }
 
+    override fun checkVerifyEmail(): Boolean {
+        val user = firebaseAuth.currentUser
+        user?.reload()
+        return user?.isEmailVerified == true
+    }
+
     private fun getErrorText(error: FirebaseAuthException?) = when (error?.errorCode) {
         "ERROR_INVALID_EMAIL" -> "Некорректный email"
         "ERROR_WRONG_PASSWORD" -> "Неверный пароль"

@@ -8,4 +8,6 @@ interface AuthRepository {
     suspend fun loginUser(email: String, password: String): Flow<Resource<Boolean>>
 
     suspend fun registerUser(userModel: UserModel, password: String): Flow<Resource<Boolean>>
+
+    fun checkVerifyEmail(): Boolean
 }

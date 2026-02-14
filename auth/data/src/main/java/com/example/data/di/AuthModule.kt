@@ -4,6 +4,7 @@ import com.example.data.repository.AuthRepositoryImpl
 import com.example.data.storage.AuthStorage
 import com.example.data.storage.AuthStorageImpl
 import com.example.domain.repository.AuthRepository
+import com.example.domain.usecase.CheckVerifyUseCase
 import com.example.domain.usecase.LoginUserUseCase
 import com.example.domain.usecase.RegisterUserUseCase
 import com.google.firebase.auth.FirebaseAuth
@@ -36,4 +37,8 @@ class AuthModule {
     @Provides
     fun provideRegisterUserUseCase(authRepository: AuthRepository) =
         RegisterUserUseCase(authRepository = authRepository)
+
+    @Provides
+    fun provideCheckVerifyEmailUseCase(authRepository: AuthRepository) =
+        CheckVerifyUseCase(authRepository = authRepository)
 }

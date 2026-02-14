@@ -8,4 +8,6 @@ interface AuthStorage {
     suspend fun loginUser(email: String, password: String): Flow<Resource<Boolean>>
 
     suspend fun registerUser(userModelDto: UserModelDto, password: String): Flow<Resource<Boolean>>
+
+    fun checkVerifyEmail(): Boolean
 }

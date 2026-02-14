@@ -46,7 +46,10 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
                 }
 
                 is State.Success -> {
-                    val uri = "notelist://groups".toUri()
+                    val uri =
+                        if (viewModel.checkVerifyEmail())
+                            "notelist://groups".toUri()
+                        else "notelist://verify_email".toUri()
                     findNavController().popBackStack()
                     findNavController().navigate(uri)
                 }

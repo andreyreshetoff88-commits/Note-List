@@ -13,4 +13,6 @@ class AuthRepositoryImpl @Inject constructor(private val authStorage: AuthStorag
 
     override suspend fun registerUser(userModel: UserModel, password: String) =
         authStorage.registerUser(userModelDto = userModel.toDto(), password = password)
+
+    override fun checkVerifyEmail() = authStorage.checkVerifyEmail()
 }

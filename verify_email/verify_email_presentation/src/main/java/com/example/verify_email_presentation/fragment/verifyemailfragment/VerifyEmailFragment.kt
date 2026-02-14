@@ -1,7 +1,6 @@
 package com.example.verify_email_presentation.fragment.verifyemailfragment
 
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -28,7 +27,6 @@ class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding>() {
 
     override fun onStart() {
         super.onStart()
-        Log.d("ololo", "onStart: ${viewModel.checkVerifyEmail()}")
         if (viewModel.checkVerifyEmail()) {
             val uri = "notelist://groups".toUri()
             findNavController().navigate(uri)

@@ -46,7 +46,7 @@ class RegisterBottomSheetFragment : BaseBaseFragmentFragment<FragmentRegisterBot
                 }
 
                 is State.Success -> {
-                    val uri = "notelist://groups".toUri()
+                    val uri = "notelist://verify_email".toUri()
                     findNavController().popBackStack()
                     findNavController().navigate(uri)
                 }
