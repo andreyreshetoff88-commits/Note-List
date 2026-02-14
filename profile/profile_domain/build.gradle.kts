@@ -11,3 +11,12 @@ kotlin {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
+dependencies{
+
+    //Hilt
+    api(group = "javax.inject", name = "javax.inject", version = "1")
+
+    //Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+
+}

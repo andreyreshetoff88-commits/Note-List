@@ -9,4 +9,5 @@
     <color name="orange">#A08D5F</color>
     <color name="text_color">#28B0A6</color>
     <color name="button_disabled_bg">#3A3735</color>
+    <color name="card_view_user_info_bg">#363433</color>
 </resources>

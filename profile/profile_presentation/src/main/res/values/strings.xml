@@ -1,4 +1,10 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_out_string">Выйти из аккаунта?</string>
+    <string name="exit_string">Выйти</string>
+    <string name="sign_out_message_string">Вы действительно хотите выйти из аккаунта?</string>
+    <string name="cancel_string">Отмена</string>
+    <string name="change_password_string">Сменить пароль</string>
+    <string name="ready_profile_string">Готово</string>
 </resources>
