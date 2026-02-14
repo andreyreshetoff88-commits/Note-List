@@ -3,7 +3,7 @@ package com.example.core.room.entitys
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "groups")
+@Entity(tableName = "group_table")
 data class GroupEntity(
     @PrimaryKey
     val id: String,

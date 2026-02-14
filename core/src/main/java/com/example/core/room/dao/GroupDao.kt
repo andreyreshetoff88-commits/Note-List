@@ -17,7 +17,7 @@ interface GroupDao {
     @Update
     suspend fun updateGroup(group: GroupEntity)
 
-    @Query("SELECT * FROM groups WHERE id = :groupId")
+    @Query("SELECT * FROM group_table WHERE id = :groupId")
     fun getGroupById(groupId: String): Flow<GroupEntity?>
 
     @Delete
