@@ -49,6 +49,11 @@ dependencies {
     api(libs.firebase.auth)
     api(libs.firebase.database)
 
+    //room
+    implementation (libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
