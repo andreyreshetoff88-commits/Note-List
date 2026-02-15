@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.core.room.entitys.GroupEntity
 import com.example.core.room.entitys.TodoEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,7 +18,7 @@ interface TodoDao {
     suspend fun updateGroup(todo: TodoEntity)
 
     @Query("SELECT * FROM todos WHERE id = :todoId")
-    fun getGroupById(todoId: String): Flow<GroupEntity?>
+    fun getGroupById(todoId: String): Flow<TodoEntity?>
 
     @Delete
     suspend fun deleteGroup(todo: TodoEntity)

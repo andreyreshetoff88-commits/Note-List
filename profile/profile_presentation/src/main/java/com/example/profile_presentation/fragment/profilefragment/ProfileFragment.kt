@@ -151,10 +151,31 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 lifecycleScope.launch {
                     viewModel.editFirstName(dialogBinding.etEnterDisplayName.text.toString())
                 }
-                dialog.dismiss()
             } else
                 dialogBinding.tltEnterDisplayName.error = "Поле должно быть заполнено"
         }
+
+        viewModel.editUserInfoState.onEach {
+            when(it) {
+                is State.Empty -> {
+                    dialogBinding.tltEnterDisplayName.visibility = View.VISIBLE
+                    dialogBinding.progressBar.visibility = View.GONE
+                }
+                is State.Loading -> {
+                    dialogBinding.tltEnterDisplayName.visibility = View.INVISIBLE
+                    dialogBinding.progressBar.visibility = View.VISIBLE
+                }
+                is State.Success -> {
+                    showToast("Имя успешно изменено")
+                    dialog.dismiss()
+                }
+                is State.Error -> {
+                    dialogBinding.tltEnterDisplayName.visibility = View.VISIBLE
+                    dialogBinding.progressBar.visibility = View.GONE
+                    showToast(it.message.toString())
+                }
+            }
+        }.launchIn(lifecycleScope)
 
         dialogBinding.btnEditDisplayNameCancel.setOnClickListener {
             dialog.dismiss()

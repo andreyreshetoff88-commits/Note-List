@@ -44,11 +44,14 @@ android {
 dependencies {
 
     implementation(project(":core"))
+    implementation(project(":app:app_data"))
+    implementation(project(":app:app_domain"))
     implementation(project(":splash:presintation"))
     implementation(project(":auth:presintation"))
     implementation(project(":groups:groups_presentation"))
     implementation(project(":profile:profile_presentation"))
     implementation(project(":verify_email:verify_email_presentation"))
+    implementation(project(":friends:friends_presentation"))
 
     //hilt
     implementation(libs.hilt.android)

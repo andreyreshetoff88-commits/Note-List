@@ -25,6 +25,8 @@ class ProfileViewModel @Inject constructor(
     val signOutState: StateFlow<State<Boolean>> get() = _signOutState
     private var _userInfoState = MutableStateFlow<State<UserModel>>(State.Empty())
     val userInfoState: StateFlow<State<UserModel>> get() = _userInfoState
+    private var _editUserInfoState = MutableStateFlow<State<Boolean>>(State.Empty())
+    val editUserInfoState: StateFlow<State<Boolean>> get() = _editUserInfoState
 
     suspend fun getUserInfo() {
         getUserInfoUseCase.execute().onEach {
@@ -42,12 +44,12 @@ class ProfileViewModel @Inject constructor(
     suspend fun editFirstName(firstName: String) {
         editFirstNameUseCase.execute(firstName = firstName).onEach {
             when (it) {
-                is Resource.Loading -> _userInfoState.value = State.Loading()
+                is Resource.Loading -> _editUserInfoState.value = State.Loading()
                 is Resource.Success -> {
-                    _userInfoState.value = State.Success(data = it.data)
+                    _editUserInfoState.value = State.Success(data = it.data?.success)
                 }
 
-                is Resource.Error -> _userInfoState.value = State.Error(message = it.message)
+                is Resource.Error -> _editUserInfoState.value = State.Error(message = it.message)
             }
         }.launchIn(viewModelScope)
     }

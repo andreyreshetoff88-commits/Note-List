@@ -1,7 +1,8 @@
 package com.example.profile_data.storage
 
 import com.example.core.Constants.NODE_USERS
-import com.example.profile_data.models.UserModelDto
+import com.example.core.Constants.USER_UID
+import com.example.profile_data.models.DataEditModelDto
 import com.example.profile_domain.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -13,47 +14,25 @@ class ProfileStorageImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: DatabaseReference
 ) : ProfileStorage {
-    override suspend fun getUserInfo(): UserModelDto {
-        try {
-            val snapshot = firebaseDatabase.child(NODE_USERS)
-                .child(firebaseAuth.currentUser!!.uid).get().await()
-            val id = snapshot.child("id").getValue(String::class.java)
-            val firstName = snapshot.child("firstName").getValue(String::class.java)
-            val lastName = snapshot.child("lastName").getValue(String::class.java)
-            val email = snapshot.child("email").getValue(String::class.java)
-            val userPhoto = snapshot.child("userPhoto").getValue(String::class.java)
-
-            return UserModelDto(
-                id = id,
-                firstName = firstName,
-                lastName = lastName,
-                email = email,
-                userPhoto = userPhoto
-            )
-        } catch (e: Exception) {
-            return UserModelDto(error = e.localizedMessage)
-        }
-    }
-
-    override suspend fun editFirstName(firstName: String): UserModelDto {
+    override suspend fun editFirstName(firstName: String): DataEditModelDto {
         try {
             firebaseDatabase.child(NODE_USERS)
-                .child(firebaseAuth.currentUser!!.uid)
+                .child(USER_UID)
                 .child("firstName").setValue(firstName).await()
-            return getUserInfo()
+            return DataEditModelDto(success = true)
         }catch (e: Exception){
-            return UserModelDto(error = e.localizedMessage)
+            return DataEditModelDto(error = e.localizedMessage)
         }
     }
 
-    override suspend fun editLastName(lastName: String): UserModelDto {
+    override suspend fun editLastName(lastName: String): DataEditModelDto {
         try {
             firebaseDatabase.child(NODE_USERS)
-                .child(firebaseAuth.currentUser!!.uid)
+                .child(USER_UID)
                 .child("lastName").setValue(lastName).await()
-            return getUserInfo()
+            return DataEditModelDto(success = true)
         }catch (e: Exception){
-            return UserModelDto(error = e.localizedMessage)
+            return DataEditModelDto(error = e.localizedMessage)
         }
     }
 

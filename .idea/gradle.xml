@@ -11,11 +11,17 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app/app_data" />
+            <option value="$PROJECT_DIR$/app/app_domain" />
             <option value="$PROJECT_DIR$/auth" />
             <option value="$PROJECT_DIR$/auth/data" />
             <option value="$PROJECT_DIR$/auth/domain" />
             <option value="$PROJECT_DIR$/auth/presintation" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/friends" />
+            <option value="$PROJECT_DIR$/friends/friends_data" />
+            <option value="$PROJECT_DIR$/friends/friends_domain" />
+            <option value="$PROJECT_DIR$/friends/friends_presentation" />
             <option value="$PROJECT_DIR$/groups" />
             <option value="$PROJECT_DIR$/groups/groups_data" />
             <option value="$PROJECT_DIR$/groups/groups_domain" />

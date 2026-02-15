@@ -1,5 +1,6 @@
 package com.example.profile_data.di
 
+import com.example.core.room.dao.UserDao
 import com.example.profile_data.repository.ProfileRepositoryImpl
 import com.example.profile_data.storage.ProfileStorage
 import com.example.profile_data.storage.ProfileStorageImpl
@@ -13,6 +14,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -29,8 +31,16 @@ class ProfileModule {
     }
 
     @Provides
-    fun provideProfileRepository(profileStorage: ProfileStorage): ProfileRepository {
-        return ProfileRepositoryImpl(profileStorage = profileStorage)
+    fun provideProfileRepository(
+        appScope: CoroutineScope,
+        profileStorage: ProfileStorage,
+        userDao: UserDao
+    ): ProfileRepository {
+        return ProfileRepositoryImpl(
+            appScope = appScope,
+            profileStorage = profileStorage,
+            userDao = userDao
+        )
     }
 
     @Provides

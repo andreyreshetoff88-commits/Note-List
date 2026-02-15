@@ -9,5 +9,6 @@
     <include app:graph="@navigation/verify_email_nav_graph" />
     <include app:graph="@navigation/groups_nav_graph" />
     <include app:graph="@navigation/profile_nav_graph" />
+    <include app:graph="@navigation/friends_nav_graph" />
 
 </navigation>

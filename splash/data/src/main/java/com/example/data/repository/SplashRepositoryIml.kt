@@ -7,7 +7,6 @@ import javax.inject.Inject
 class SplashRepositoryIml @Inject constructor(private val firebaseAuth: FirebaseAuth) :
     SplashRepository {
     override fun checkUser(): Boolean {
-//        firebaseAuth.signOut()
         return firebaseAuth.currentUser != null
     }
 
