@@ -1,5 +1,6 @@
 package com.example.core.room.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -8,6 +9,7 @@ import androidx.room.Update
 import com.example.core.room.entitys.UserProfileEntity
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface UserProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: UserProfileEntity)
@@ -15,7 +17,7 @@ interface UserProfileDao {
     @Update
     suspend fun updateUser(user: UserProfileEntity)
 
-    @Query("SELECT * FROM users WHERE id = :userId")
+    @Query("SELECT * FROM user_profile WHERE id = :userId")
     fun getUserById(userId: String): Flow<UserProfileEntity?>
 
     @Delete

@@ -1,49 +1,61 @@
 package com.example.profile_data.storage
 
 import com.example.core.Constants.NODE_USERS
-import com.example.core.Constants.USER_UID
-import com.example.profile_data.models.DataEditModelDto
-import com.example.profile_domain.utils.Resource
+import com.example.core.UserSession
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 
 class ProfileStorageImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseDatabase: DatabaseReference
+    private val firebaseDatabase: DatabaseReference,
+    private val userSession: UserSession
 ) : ProfileStorage {
-    override suspend fun editFirstName(firstName: String): DataEditModelDto {
-        try {
-            firebaseDatabase.child(NODE_USERS)
-                .child(USER_UID)
-                .child("firstName").setValue(firstName).await()
-            return DataEditModelDto(success = true)
-        }catch (e: Exception){
-            return DataEditModelDto(error = e.localizedMessage)
-        }
-    }
+    override suspend fun editFirstName(firstName: String): Result<Unit> =
+        suspendCancellableCoroutine { cont ->
+            val userRef = firebaseDatabase.child(NODE_USERS)
+                .child(userSession.userId.value!!)
+                .child("firstName")
 
-    override suspend fun editLastName(lastName: String): DataEditModelDto {
-        try {
-            firebaseDatabase.child(NODE_USERS)
-                .child(USER_UID)
-                .child("lastName").setValue(lastName).await()
-            return DataEditModelDto(success = true)
-        }catch (e: Exception){
-            return DataEditModelDto(error = e.localizedMessage)
-        }
-    }
+            userRef.setValue(firstName)
+                .addOnSuccessListener {
+                    cont.resumeWith(Result.success(Result.success(Unit)))
+                }
+                .addOnFailureListener { e ->
+                    cont.resumeWith(Result.success(Result.failure(e)))
+                }
 
-    override suspend fun signOut() = flow {
-        emit(Resource.Loading())
-        try {
+            cont.invokeOnCancellation {
+                userRef.onDisconnect()
+            }
+        }
+
+    override suspend fun editLastName(lastName: String): Result<Unit> =
+        suspendCancellableCoroutine { cont ->
+            val userRef = firebaseDatabase.child(NODE_USERS)
+                .child(userSession.userId.value!!)
+                .child("lastName")
+
+            userRef.setValue(lastName)
+                .addOnSuccessListener {
+                    cont.resumeWith(Result.success(Result.success(Unit)))
+                }
+                .addOnFailureListener { e ->
+                    cont.resumeWith(Result.success(Result.failure(e)))
+                }
+
+            cont.invokeOnCancellation {
+                userRef.onDisconnect()
+            }
+        }
+
+    override suspend fun signOut(): Result<Unit> {
+        return try {
             firebaseAuth.signOut()
-
-            emit(Resource.Success(data = true))
+            Result.success(Unit)
         } catch (e: Exception) {
-            emit(Resource.Error(message = e.localizedMessage))
+            Result.failure(e)
         }
     }
 }

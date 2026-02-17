@@ -4,9 +4,9 @@ import com.example.app_data.models.UserModelDto
 import kotlinx.coroutines.flow.Flow
 
 interface MainRemoteStorage {
-    fun isAuth(): Boolean
+    suspend fun isAuth(): Boolean
 
-    fun observeUserProfile(): Flow<UserModelDto>
+    fun observeUserProfile(userId: String): Flow<UserModelDto>
 
-    fun observeUserFriends(): Flow<String>
+    fun observeUserFriends(userId: String): Flow<String>
 }

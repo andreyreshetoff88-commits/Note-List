@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.core.State
@@ -35,9 +37,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     override fun initFields() = with(binding) {
-        lifecycleScope.launch {
-            viewModel.getUserInfo()
-        }
         btnExit.setOnClickListener {
             showLogoutDialog()
         }
@@ -80,39 +79,43 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun initUserInfoFlow() = with(binding) {
-        viewModel.userInfoState.onEach {
-            when (it) {
-                is State.Empty -> {
-                    showUI()
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userInfoState.collect {
+                    when (it) {
+                        is State.Empty -> {
+                            showUI()
+                        }
 
-                is State.Loading -> {
-                    showProgressBar()
-                }
+                        is State.Loading -> {
+                            showProgressBar()
+                        }
 
-                is State.Success -> {
-                    showUI()
+                        is State.Success -> {
+                            showUI()
 
-                    it.data?.let { userModel ->
-                        tvFirstNameProfile.text = userModel.firstName
-                        tvLastNameProfile.text = userModel.lastName
-                        tvEmailProfile.text = userModel.email
-                        imgUserPhoto.load(
-                            data =
-                                if (userModel.userPhoto.equals("null"))
-                                    com.example.core.R.drawable.default_user_photo
-                                else
-                                    userModel.userPhoto
-                        )
+                            it.data?.let { userModel ->
+                                tvFirstNameProfile.text = userModel.firstName
+                                tvLastNameProfile.text = userModel.lastName
+                                tvEmailProfile.text = userModel.email
+                                imgUserPhoto.load(
+                                    data =
+                                        if (userModel.userPhoto.equals("null"))
+                                            com.example.core.R.drawable.default_user_photo
+                                        else
+                                            userModel.userPhoto
+                                )
+                            }
+                        }
+
+                        is State.Error -> {
+                            showUI()
+                            showToast(message = it.message.toString())
+                        }
                     }
                 }
-
-                is State.Error -> {
-                    showUI()
-                    showToast(message = it.message.toString())
-                }
             }
-        }.launchIn(lifecycleScope)
+        }
     }
 
     private fun showLogoutDialog() {
@@ -123,7 +126,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             .create()
 
         dialogBinding.btnLogoutConfirm.setOnClickListener {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.signOut()
             }
             dialog.dismiss()
@@ -149,33 +152,35 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         dialogBinding.btnEditDisplayNameConfirm.setOnClickListener {
             if (dialogBinding.etEnterDisplayName.text.toString().isNotEmpty()) {
                 lifecycleScope.launch {
-                    viewModel.editFirstName(dialogBinding.etEnterDisplayName.text.toString())
+                    viewModel.editFirstName(dialogBinding.etEnterDisplayName.text.toString().trim())
                 }
             } else
                 dialogBinding.tltEnterDisplayName.error = "Поле должно быть заполнено"
         }
 
         viewModel.editUserInfoState.onEach {
-            when(it) {
+            when (it) {
                 is State.Empty -> {
                     dialogBinding.tltEnterDisplayName.visibility = View.VISIBLE
                     dialogBinding.progressBar.visibility = View.GONE
                 }
+
                 is State.Loading -> {
                     dialogBinding.tltEnterDisplayName.visibility = View.INVISIBLE
                     dialogBinding.progressBar.visibility = View.VISIBLE
                 }
+
                 is State.Success -> {
-                    showToast("Имя успешно изменено")
                     dialog.dismiss()
                 }
+
                 is State.Error -> {
                     dialogBinding.tltEnterDisplayName.visibility = View.VISIBLE
                     dialogBinding.progressBar.visibility = View.GONE
                     showToast(it.message.toString())
                 }
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         dialogBinding.btnEditDisplayNameCancel.setOnClickListener {
             dialog.dismiss()
@@ -196,11 +201,41 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         dialogBinding.btnEditDisplayNameConfirm.setOnClickListener {
             if (dialogBinding.etEnterDisplayName.text.toString().isNotEmpty()) {
-                showToast("Фамилия изменена")
-                dialog.dismiss()
+                if (dialogBinding.etEnterDisplayName.text.toString().isNotEmpty()) {
+                    lifecycleScope.launch {
+                        viewModel.editLastName(
+                            dialogBinding.etEnterDisplayName.text.toString().trim()
+                        )
+                    }
+                } else
+                    dialogBinding.tltEnterDisplayName.error = "Поле должно быть заполнено"
             } else
                 dialogBinding.tltEnterDisplayName.error = "Поле должно быть заполнено"
         }
+
+        viewModel.editUserInfoState.onEach {
+            when (it) {
+                is State.Empty -> {
+                    dialogBinding.tltEnterDisplayName.visibility = View.VISIBLE
+                    dialogBinding.progressBar.visibility = View.GONE
+                }
+
+                is State.Loading -> {
+                    dialogBinding.tltEnterDisplayName.visibility = View.INVISIBLE
+                    dialogBinding.progressBar.visibility = View.VISIBLE
+                }
+
+                is State.Success -> {
+                    dialog.dismiss()
+                }
+
+                is State.Error -> {
+                    dialogBinding.tltEnterDisplayName.visibility = View.VISIBLE
+                    dialogBinding.progressBar.visibility = View.GONE
+                    showToast(it.message.toString())
+                }
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         dialogBinding.btnEditDisplayNameCancel.setOnClickListener {
             dialog.dismiss()

@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import com.example.core.UserSession
 import com.example.data.repository.AuthRepositoryImpl
 import com.example.data.storage.AuthStorage
 import com.example.data.storage.AuthStorageImpl
@@ -20,9 +21,14 @@ class AuthModule {
     @Provides
     fun provideAuthStorage(
         firebaseAuth: FirebaseAuth,
-        firebaseDatabase: DatabaseReference
+        firebaseDatabase: DatabaseReference,
+        userSession: UserSession
     ): AuthStorage {
-        return AuthStorageImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+        return AuthStorageImpl(
+            firebaseAuth = firebaseAuth,
+            firebaseDatabase = firebaseDatabase,
+            userSession = userSession
+        )
     }
 
     @Provides

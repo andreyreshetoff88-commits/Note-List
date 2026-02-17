@@ -1,11 +1,13 @@
 package com.example.profile_data.di
 
-import com.example.core.room.dao.UserDao
+import com.example.core.UserSession
+import com.example.core.room.dao.UserProfileDao
 import com.example.profile_data.repository.ProfileRepositoryImpl
 import com.example.profile_data.storage.ProfileStorage
 import com.example.profile_data.storage.ProfileStorageImpl
 import com.example.profile_domain.repository.ProfileRepository
 import com.example.profile_domain.usecase.EditFirstNameUseCase
+import com.example.profile_domain.usecase.EditLastNameUseCase
 import com.example.profile_domain.usecase.GetUserInfoUseCase
 import com.example.profile_domain.usecase.SignOutUseCase
 import com.google.firebase.auth.FirebaseAuth
@@ -14,7 +16,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,24 +23,26 @@ class ProfileModule {
     @Provides
     fun provideProfileStorage(
         firebaseAuth: FirebaseAuth,
-        firebaseDatabase: DatabaseReference
+        firebaseDatabase: DatabaseReference,
+        userSession: UserSession
     ): ProfileStorage {
         return ProfileStorageImpl(
             firebaseAuth = firebaseAuth,
-            firebaseDatabase = firebaseDatabase
+            firebaseDatabase = firebaseDatabase,
+            userSession = userSession
         )
     }
 
     @Provides
     fun provideProfileRepository(
-        appScope: CoroutineScope,
         profileStorage: ProfileStorage,
-        userDao: UserDao
+        userProfileDao: UserProfileDao,
+        userSession: UserSession
     ): ProfileRepository {
         return ProfileRepositoryImpl(
-            appScope = appScope,
             profileStorage = profileStorage,
-            userDao = userDao
+            userProfileDao = userProfileDao,
+            userSession = userSession
         )
     }
 
@@ -54,4 +57,8 @@ class ProfileModule {
     @Provides
     fun provideEditFirstNameUseCase(profileRepository: ProfileRepository) =
         EditFirstNameUseCase(profileRepository = profileRepository)
+
+    @Provides
+    fun provideEditLastNameUseCase(profileRepository: ProfileRepository) =
+        EditLastNameUseCase(profileRepository = profileRepository)
 }

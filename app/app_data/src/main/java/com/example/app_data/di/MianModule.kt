@@ -4,7 +4,8 @@ import com.example.app_data.remote.MainRemoteStorage
 import com.example.app_data.remote.MainRemoteStorageImpl
 import com.example.app_data.repository.MainRepositoryImpl
 import com.example.app_domain.repository.MainRepository
-import com.example.core.room.dao.UserDao
+import com.example.core.UserSession
+import com.example.core.room.dao.UserProfileDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import dagger.Module
@@ -19,24 +20,28 @@ class MianModule {
     @Provides
     fun provideMainRemoteStorage(
         firebaseAuth: FirebaseAuth,
-        firebaseDatabase: DatabaseReference
+        firebaseDatabase: DatabaseReference,
+        userSession: UserSession
     ): MainRemoteStorage {
         return MainRemoteStorageImpl(
             firebaseAuth = firebaseAuth,
-            firebaseDatabase = firebaseDatabase
+            firebaseDatabase = firebaseDatabase,
+            userSession = userSession
         )
     }
 
     @Provides
     fun provideMainRepository(
         appScope: CoroutineScope,
+        userSession: UserSession,
         mainRemoteStorage: MainRemoteStorage,
-        userDao: UserDao
+        userProfileDao: UserProfileDao
     ): MainRepository {
         return MainRepositoryImpl(
             appScope = appScope,
+            userSession = userSession,
             mainRemoteStorage = mainRemoteStorage,
-            userDao = userDao
+            userProfileDao = userProfileDao
         )
     }
 }

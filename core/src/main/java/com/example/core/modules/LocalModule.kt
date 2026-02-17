@@ -2,12 +2,14 @@ package com.example.core.modules
 
 import android.content.Context
 import androidx.room.Room
+import com.example.core.UserSession
 import com.example.core.room.AppDatabase
 import com.example.core.room.dao.ChatMessageDao
 import com.example.core.room.dao.GroupDao
 import com.example.core.room.dao.PurchaseDao
 import com.example.core.room.dao.TodoDao
 import com.example.core.room.dao.UserDao
+import com.example.core.room.dao.UserProfileDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,11 +22,15 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RoomModule {
+object LocalModule {
     @Provides
     @Singleton
     fun provideAppScope(): CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    @Provides
+    @Singleton
+    fun provideUserSession(): UserSession = UserSession()
 
     @Provides
     @Singleton
@@ -40,6 +46,9 @@ object RoomModule {
 
     @Provides
     fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
+
+    @Provides
+    fun provideUserProfileDao(db: AppDatabase): UserProfileDao = db.userProfileDao()
 
     @Provides
     fun provideGroupDao(db: AppDatabase): GroupDao = db.groupDao()

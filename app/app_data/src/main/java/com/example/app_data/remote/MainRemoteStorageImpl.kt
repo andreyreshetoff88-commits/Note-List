@@ -1,9 +1,10 @@
 package com.example.app_data.remote
 
+import android.util.Log
 import com.example.app_data.models.UserModelDto
 import com.example.core.Constants.NODE_USERS
 import com.example.core.Constants.NODE_USER_FRIENDS
-import com.example.core.Constants.USER_UID
+import com.example.core.UserSession
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -14,29 +15,36 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class MainRemoteStorageImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseDatabase: DatabaseReference
+    private val firebaseDatabase: DatabaseReference,
+    private val userSession: UserSession
 ) : MainRemoteStorage {
-    override fun isAuth(): Boolean {
-        val user = firebaseAuth.currentUser
-        if (user != null) {
-            user.reload()
-            if (user.isEmailVerified) {
-                USER_UID = firebaseAuth.currentUser!!.uid
-                return true
-            }
-        } else
-            return false
-        return false
+    private var userProfileListener: ValueEventListener? = null
+
+    override suspend fun isAuth(): Boolean {
+        val user = firebaseAuth.currentUser ?: return false
+        user.reload().await()
+        return if (user.isEmailVerified) {
+            userSession.setUser(firebaseAuth.currentUser?.uid)
+            true
+        } else {
+            false
+        }
     }
 
-    override fun observeUserProfile(): Flow<UserModelDto> = callbackFlow {
+    override fun observeUserProfile(userId: String): Flow<UserModelDto> = callbackFlow {
+        userProfileListener?.let {
+            firebaseDatabase.child(NODE_USERS).child(userId).removeEventListener(it)
+        }
+
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val userModelDto = snapshot.getValue(UserModelDto::class.java) ?: UserModelDto()
+                Log.d("ololo", "onDataChange: $userModelDto")
                 if (userModelDto.id != null)
                     trySend(userModelDto)
             }
@@ -46,14 +54,15 @@ class MainRemoteStorageImpl @Inject constructor(
             }
         }
 
-        firebaseDatabase.child(NODE_USERS).child(USER_UID)
+        userProfileListener = listener
+        firebaseDatabase.child(NODE_USERS).child(userId)
             .addValueEventListener(listener)
 
         awaitClose { firebaseDatabase.removeEventListener(listener) }
     }
 
 
-    override fun observeUserFriends(): Flow<String> = callbackFlow {
+    override fun observeUserFriends(userId: String): Flow<String> = callbackFlow {
         val listener = object : ChildEventListener {
             override fun onChildAdded(
                 snapshot: DataSnapshot,
@@ -86,7 +95,7 @@ class MainRemoteStorageImpl @Inject constructor(
 
         }
 
-        firebaseDatabase.child(NODE_USER_FRIENDS).child(USER_UID)
+        firebaseDatabase.child(NODE_USER_FRIENDS).child(userId)
             .addChildEventListener(listener)
 
         awaitClose { firebaseDatabase.removeEventListener(listener) }

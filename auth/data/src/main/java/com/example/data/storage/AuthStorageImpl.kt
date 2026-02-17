@@ -1,6 +1,7 @@
 package com.example.data.storage
 
 import com.example.core.Constants.NODE_USERS
+import com.example.core.UserSession
 import com.example.data.models.UserModelDto
 import com.example.domain.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 class AuthStorageImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseDatabase: DatabaseReference
+    private val firebaseDatabase: DatabaseReference,
+    private val userSession: UserSession
 ) : AuthStorage {
     private val message = "Ой, что-то пошло не так"
 
@@ -21,8 +23,10 @@ class AuthStorageImpl @Inject constructor(
         try {
             val resultAuth = firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
-            if (resultAuth != null)
+            if (resultAuth != null) {
+                userSession.setUser(firebaseAuth.currentUser?.uid)
                 emit(Resource.Success(data = true))
+            }
             else
                 emit(Resource.Error(message = message))
         } catch (e: Exception) {
@@ -39,6 +43,7 @@ class AuthStorageImpl @Inject constructor(
                     is Resource.Loading -> emit(Resource.Loading())
                     is Resource.Success -> {
                         firebaseAuth.currentUser?.sendEmailVerification()?.await()
+                        userSession.setUser(firebaseAuth.currentUser?.uid)
                         emit(Resource.Success(it.data))
                     }
 
