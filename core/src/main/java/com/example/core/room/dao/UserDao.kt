@@ -17,9 +17,15 @@ interface UserDao {
     @Update
     suspend fun updateUser(user: UserEntity)
 
-    @Query("SELECT * FROM users WHERE id = :userId")
-    fun getUserById(userId: String): Flow<UserEntity?>
+    @Query("SELECT * FROM users_friend WHERE ownerUserId = :ownerUserId AND id = :userId")
+    fun getUserById(ownerUserId: String, userId: String): Flow<UserEntity?>
+
+    @Query("SELECT * FROM users_friend WHERE ownerUserId = :ownerUserId")
+    fun getUserByOwnerId(ownerUserId: String): Flow<UserEntity?>
 
     @Delete
     suspend fun deleteUser(user: UserEntity)
+
+    @Query("DELETE FROM users_friend WHERE ownerUserId = :ownerUserId AND id = :userId")
+    suspend fun deleteUserById(ownerUserId: String, userId: String)
 }

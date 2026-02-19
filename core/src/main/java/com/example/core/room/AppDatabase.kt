@@ -2,7 +2,6 @@ package com.example.core.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.example.core.room.dao.ChatMessageDao
 import com.example.core.room.dao.GroupDao
 import com.example.core.room.dao.PurchaseDao
@@ -27,7 +26,6 @@ import com.example.core.room.entitys.UserProfileEntity
     ],
     version = 1
 )
-@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun userProfileDao(): UserProfileDao

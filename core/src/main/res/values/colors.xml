@@ -10,4 +10,6 @@
     <color name="text_color">#28B0A6</color>
     <color name="button_disabled_bg">#3A3735</color>
     <color name="card_view_user_info_bg">#363433</color>
+    <color name="enabled_button_text_color">#2C250F</color>
+    <color name="disabled_button_text_color">#77726D</color>
 </resources>
