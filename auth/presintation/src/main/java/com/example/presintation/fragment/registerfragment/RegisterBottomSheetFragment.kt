@@ -134,7 +134,8 @@ class RegisterBottomSheetFragment : BaseBaseFragmentFragment<FragmentRegisterBot
             return false
         } else if (!PASSWORD_REGEX.matches(password)) {
             tltEnterPassword.error =
-                "Минимум 8 символов: 1 заглавная, 1 строчная, 1 цифра и 1 символ \"_\" или \"-\". Разрешены только латинские буквы, цифры, \"_\" и \"-\"."
+                "Минимум 8 символов: 1 заглавная, 1 строчная, 1 цифра и 1 символ \"_\" или " +
+                        "\"-\". Разрешены только латинские буквы, цифры, \"_\" и \"-\"."
             return false
         }
         return true

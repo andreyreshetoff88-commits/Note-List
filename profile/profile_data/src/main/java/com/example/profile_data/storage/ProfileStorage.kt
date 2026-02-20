@@ -5,5 +5,7 @@ interface ProfileStorage {
 
     suspend fun editLastName(lastName: String): Result<Unit>
 
+    suspend fun changePassword(oldPassword: String, newPassword: String): Result<Unit>
+
     suspend fun signOut(): Result<Unit>
 }

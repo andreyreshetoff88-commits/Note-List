@@ -38,9 +38,9 @@ object LocalModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "note_list_db" // имя файла базы
+            "note_list_db"
         )
-            .fallbackToDestructiveMigration() // можно заменить на миграции при необходимости
+            .fallbackToDestructiveMigration()
             .build()
     }
 

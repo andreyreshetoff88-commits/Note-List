@@ -7,4 +7,8 @@
     <string name="cancel_string">Отмена</string>
     <string name="change_password_string">Сменить пароль</string>
     <string name="ready_profile_string">Готово</string>
+    <string name="old_password_string">Старый пароль</string>
+    <string name="new_password_string">Новый праоль</string>
+    <string name="confirm_new_password_string">Повторите пароль</string>
+    <string name="change_password_dialog_title_string">Хотите сменить пароль?</string>
 </resources>

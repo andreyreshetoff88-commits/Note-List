@@ -1,17 +1,22 @@
 package com.example.profile_presentation.fragment.profilefragment
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.net.toUri
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.example.core.Constants.PASSWORD_REGEX
 import com.example.core.State
 import com.example.core.showToast
+import com.example.profile_presentation.databinding.DialogChangePasswordBinding
 import com.example.profile_presentation.databinding.DialogEditDisplayNameBinding
 import com.example.profile_presentation.databinding.DialogSignOutBinding
 import com.example.profile_presentation.databinding.FragmentProfileBinding
@@ -42,7 +47,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
 
         btnChangePassword.setOnClickListener {
-            showToast("Функция в разработке")
+            showChangePasswordDialog()
         }
 
         btnEditFirstNameProfile.setOnClickListener {
@@ -238,6 +243,92 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         dialogBinding.btnEditDisplayNameCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showChangePasswordDialog() {
+        val dialogBinding = DialogChangePasswordBinding.inflate(layoutInflater)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .create()
+
+        dialogBinding.etEnterOldPassword.addTextChangedListener {
+            if (dialogBinding.tltEnterOldPassword.isErrorEnabled)
+                dialogBinding.tltEnterOldPassword.isErrorEnabled = false
+        }
+
+        dialogBinding.etEnterNewPassword.addTextChangedListener {
+            if (dialogBinding.tltEnterNewPassword.isErrorEnabled)
+                dialogBinding.tltEnterNewPassword.isErrorEnabled = false
+        }
+
+        dialogBinding.etEnterConfirmNewPassword.addTextChangedListener {
+            if (dialogBinding.tltEnterConfirmNewPassword.isErrorEnabled)
+                dialogBinding.tltEnterConfirmNewPassword.isErrorEnabled = false
+        }
+
+        dialogBinding.btnChangePasswordConfirm.setOnClickListener {
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
+            val oldPassword = dialogBinding.etEnterOldPassword.text.toString()
+            val newPassword = dialogBinding.etEnterNewPassword.text.toString()
+            val confirmNewPassword = dialogBinding.etEnterConfirmNewPassword.text.toString()
+            if (oldPassword.isEmpty()) {
+                dialogBinding.tltEnterOldPassword.error = "Введите старый пароль"
+                return@setOnClickListener
+            } else if (newPassword.isEmpty()) {
+                dialogBinding.tltEnterNewPassword.error = "Введите новый пароль"
+                return@setOnClickListener
+            } else if (!PASSWORD_REGEX.matches(newPassword)) {
+                dialogBinding.tltEnterNewPassword.error =
+                    "Минимум 8 символов: 1 заглавная, 1 строчная, 1 цифра и 1 символ \"_\" или " +
+                            "\"-\". Разрешены только латинские буквы, цифры, \"_\" и \"-\"."
+                return@setOnClickListener
+            } else if (confirmNewPassword.isEmpty()) {
+                dialogBinding.tltEnterConfirmNewPassword.error = "Введите новый пароль еще раз"
+                return@setOnClickListener
+            } else if (dialogBinding.etEnterConfirmNewPassword.text.toString().trim() !=
+                dialogBinding.etEnterNewPassword.text.toString().trim()
+            ) {
+                dialogBinding.tltEnterConfirmNewPassword.error = "Пароли не совпадают"
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch {
+                viewModel.changePassword(oldPassword = oldPassword, newPassword = newPassword)
+            }
+        }
+
+        viewModel.changePasswordState.onEach {
+            when(it) {
+                is State.Empty -> {
+                    dialogBinding.llFields.visibility = View.VISIBLE
+                    dialogBinding.progressBar.visibility = View.GONE
+                }
+                is State.Loading -> {
+                    dialogBinding.llFields.visibility = View.INVISIBLE
+                    dialogBinding.progressBar.visibility = View.VISIBLE
+                }
+                is State.Success -> {
+                    showToast("Пароль успешно изменен")
+                    val uri = "notelist://auth".toUri()
+                    findNavController().navigate(uri)
+                    dialog.dismiss()
+                }
+                is State.Error -> {
+                    dialogBinding.llFields.visibility = View.VISIBLE
+                    dialogBinding.progressBar.visibility = View.GONE
+                    showToast(it.message ?: "Что-то пошло не так")
+                }
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        dialogBinding.btnChangePasswordCancel.setOnClickListener {
             dialog.dismiss()
         }
 

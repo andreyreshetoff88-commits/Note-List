@@ -17,24 +17,25 @@ class ProfileRepositoryImpl @Inject constructor(
     private val userProfileDao: UserProfileDao,
     private val userSession: UserSession
 ) : ProfileRepository {
-    override fun getUserInfo() = userProfileDao.getUserById(userSession.userId.value!!).map { entity ->
-        if (entity == null)
-            Resource.Error(message = "Пользователь не найден")
-        else
-            Resource.Success(
-                UserModel(
-                    id = entity.id,
-                    firstName = entity.firstName,
-                    lastName = entity.lastName,
-                    email = entity.email,
-                    userPhoto = entity.userPhoto
+    override fun getUserInfo() =
+        userProfileDao.getUserById(userSession.userId.value!!).map { entity ->
+            if (entity == null)
+                Resource.Error(message = "Пользователь не найден")
+            else
+                Resource.Success(
+                    UserModel(
+                        id = entity.id,
+                        firstName = entity.firstName,
+                        lastName = entity.lastName,
+                        email = entity.email,
+                        userPhoto = entity.userPhoto
+                    )
                 )
-            )
-    }.onStart {
-        emit(Resource.Loading())
-    }.catch { e ->
-        emit(Resource.Error(e.message))
-    }
+        }.onStart {
+            emit(Resource.Loading())
+        }.catch { e ->
+            emit(Resource.Error(e.message))
+        }
 
 
     override suspend fun editFirstName(firstName: String) =
@@ -42,6 +43,14 @@ class ProfileRepositoryImpl @Inject constructor(
 
     override suspend fun editLastName(lastName: String) =
         handleResult(profileStorage.editLastName(lastName = lastName))
+
+    override suspend fun changePassword(oldPassword: String, newPassword: String) =
+        handleResult(
+            profileStorage.changePassword(
+                oldPassword = oldPassword,
+                newPassword = newPassword
+            )
+        )
 
     override suspend fun signOut() = handleResult(profileStorage.signOut())
 

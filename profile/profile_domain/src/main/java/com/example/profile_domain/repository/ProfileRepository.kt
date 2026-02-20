@@ -11,5 +11,7 @@ interface ProfileRepository {
 
     suspend fun editLastName(lastName: String): Flow<Resource<Unit>>
 
+    suspend fun changePassword(oldPassword: String, newPassword: String): Flow<Resource<Unit>>
+
     suspend fun signOut(): Flow<Resource<Unit>>
 }

@@ -6,6 +6,7 @@ import com.example.profile_data.repository.ProfileRepositoryImpl
 import com.example.profile_data.storage.ProfileStorage
 import com.example.profile_data.storage.ProfileStorageImpl
 import com.example.profile_domain.repository.ProfileRepository
+import com.example.profile_domain.usecase.ChangePasswordUseCase
 import com.example.profile_domain.usecase.EditFirstNameUseCase
 import com.example.profile_domain.usecase.EditLastNameUseCase
 import com.example.profile_domain.usecase.GetUserInfoUseCase
@@ -61,4 +62,8 @@ class ProfileModule {
     @Provides
     fun provideEditLastNameUseCase(profileRepository: ProfileRepository) =
         EditLastNameUseCase(profileRepository = profileRepository)
+
+    @Provides
+    fun provideChangePasswordUseCase(profileRepository: ProfileRepository) =
+        ChangePasswordUseCase(profileRepository = profileRepository)
 }
