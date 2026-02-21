@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.verify_email_presentation.R
 import com.example.verify_email_presentation.databinding.FragmentVerifyEmailBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kg.reshetoff.core.base.BaseFragment
+import com.example.core.base.BaseFragment
 
 @AndroidEntryPoint
 class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding>() {

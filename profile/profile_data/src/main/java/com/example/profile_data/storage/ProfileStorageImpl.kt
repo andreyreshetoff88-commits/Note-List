@@ -4,6 +4,7 @@ import com.example.core.Constants.NODE_USERS
 import com.example.core.UserSession
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
@@ -75,8 +76,27 @@ class ProfileStorageImpl @Inject constructor(
                     cont.resumeWith(Result.success(Result.failure(e)))
                 }
             }.addOnFailureListener { e ->
+                val message = when (e) {
+                    is FirebaseAuthException -> when (e.errorCode) {
+                        "ERROR_WRONG_PASSWORD" ->
+                            "Старый пароль введён неверно"
+
+                        "ERROR_USER_MISMATCH" ->
+                            "Неверные учетные данные пользователя"
+
+                        "ERROR_USER_NOT_FOUND" ->
+                            "Пользователь не найден"
+
+                        "ERROR_INVALID_CREDENTIAL" ->
+                            "Неверный пароль"
+
+                        else -> e.localizedMessage ?: "Ошибка авторизации"
+                    }
+
+                    else -> e.localizedMessage ?: "Неизвестная ошибка"
+                }
                 cont.resumeWith(
-                    Result.success(Result.failure(e))
+                    Result.success(Result.failure(Exception(message)))
                 )
             }
         }

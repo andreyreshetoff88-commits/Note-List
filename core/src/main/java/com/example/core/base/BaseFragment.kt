@@ -1,4 +1,4 @@
-package kg.reshetoff.core.base
+package com.example.core.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.presintation.R
 import com.example.presintation.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kg.reshetoff.core.base.BaseFragment
+import com.example.core.base.BaseFragment
 
 @AndroidEntryPoint
 class SplashFragment : BaseFragment<FragmentSplashBinding>() {

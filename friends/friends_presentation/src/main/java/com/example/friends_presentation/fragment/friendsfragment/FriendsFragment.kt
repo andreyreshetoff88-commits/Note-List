@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.friends_presentation.databinding.FragmentFriendsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kg.reshetoff.core.base.BaseFragment
+import com.example.core.base.BaseFragment
 
 @AndroidEntryPoint
 class FriendsFragment : BaseFragment<FragmentFriendsBinding>() {

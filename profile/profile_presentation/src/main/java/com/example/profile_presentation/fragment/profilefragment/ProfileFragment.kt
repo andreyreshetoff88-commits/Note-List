@@ -22,7 +22,7 @@ import com.example.profile_presentation.databinding.DialogSignOutBinding
 import com.example.profile_presentation.databinding.FragmentProfileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kg.reshetoff.core.base.BaseFragment
+import com.example.core.base.BaseFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -305,25 +305,31 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
 
         viewModel.changePasswordState.onEach {
-            when(it) {
+            when (it) {
                 is State.Empty -> {
                     dialogBinding.llFields.visibility = View.VISIBLE
                     dialogBinding.progressBar.visibility = View.GONE
                 }
+
                 is State.Loading -> {
                     dialogBinding.llFields.visibility = View.INVISIBLE
                     dialogBinding.progressBar.visibility = View.VISIBLE
                 }
+
                 is State.Success -> {
                     showToast("Пароль успешно изменен")
                     val uri = "notelist://auth".toUri()
                     findNavController().navigate(uri)
                     dialog.dismiss()
                 }
+
                 is State.Error -> {
                     dialogBinding.llFields.visibility = View.VISIBLE
                     dialogBinding.progressBar.visibility = View.GONE
-                    showToast(it.message ?: "Что-то пошло не так")
+                    if (it.message == "Старый пароль введён неверно" || it.message == "Неверный пароль") {
+                        dialogBinding.tltEnterOldPassword.error = it.message
+                    } else
+                        showToast(it.message ?: "Что-то пошло не так")
                 }
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)

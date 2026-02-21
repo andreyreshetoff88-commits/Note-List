@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.groups_presentation.databinding.FragmentGroupListBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kg.reshetoff.core.base.BaseFragment
+import com.example.core.base.BaseFragment
 
 @AndroidEntryPoint
 class GroupListFragment : BaseFragment<FragmentGroupListBinding>() {

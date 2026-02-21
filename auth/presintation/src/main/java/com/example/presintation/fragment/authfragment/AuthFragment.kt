@@ -16,7 +16,7 @@ import com.example.core.State
 import com.example.presintation.R
 import com.example.presintation.databinding.FragmentAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kg.reshetoff.core.base.BaseFragment
+import com.example.core.base.BaseFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
