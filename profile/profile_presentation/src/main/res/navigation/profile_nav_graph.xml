@@ -9,5 +9,34 @@
         android:id="@+id/profileFragment"
         android:name="com.example.profile_presentation.fragment.profilefragment.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_changeUserPhotoBottomSheetDialogFragment"
+            app:destination="@id/changeUserPhotoBottomSheetDialogFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_cropAvatarFragment"
+            app:destination="@id/cropAvatarFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_cameraXFragment"
+            app:destination="@id/cameraXFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/changeUserPhotoBottomSheetDialogFragment"
+        android:name="com.example.profile_presentation.fragment.changeuserphotobottomsheetdialogfragment.ChangeUserPhotoBottomSheetDialogFragment"
+        android:label="fragment_change_user_photo_bottom_sheet_dialog"
+        tools:layout="@layout/fragment_change_user_photo_bottom_sheet_dialog"/>
+    <fragment
+        android:id="@+id/cropAvatarFragment"
+        android:name="com.example.profile_presentation.fragment.cropavatarfragment.CropAvatarFragment"
+        android:label="fragment_crop_avatar"
+        tools:layout="@layout/fragment_crop_avatar">
+        <argument
+            android:name="imageUri"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraXFragment"
+        android:name="com.example.profile_presentation.fragment.cameraxfragment.CameraXFragment"
+        android:label="fragment_camera_x"
+        tools:layout="@layout/fragment_camera_x" />
 </navigation>

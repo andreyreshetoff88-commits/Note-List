@@ -1,6 +1,4 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_out_string">Выйти из аккаунта?</string>
     <string name="exit_string">Выйти</string>
     <string name="sign_out_message_string">Вы действительно хотите выйти из аккаунта?</string>
@@ -11,4 +9,12 @@
     <string name="new_password_string">Новый праоль</string>
     <string name="confirm_new_password_string">Повторите пароль</string>
     <string name="change_password_dialog_title_string">Хотите сменить пароль?</string>
+    <string name="select_photo_from_list_string">Выберете фотографию из списка</string>
+    <string name="need_permission_photos_string">Нужен доступ к фотографиям</string>
+    <string name="need_permission_message_string">Чтобы выбрать фото профиля, приложению нужен доступ к изображениям на устройстве. Ваши файлы не будут переданы третьим лицам.</string>
+    <string name="ready_string">Готово</string>
+    <string name="make_photo">Сделать фото</string>
+    <string name="choice_from_gallery">Выбрать из галереи</string>
+    <string name="wy_we_need_camera_permission_message_string">Чтобы сделать фото профиля, приложению нужен доступ к камере вашего устройства. Ваши изображения не будут переданы третьим лицам.</string>
+    <string name="wy_we_need_storage_permission_message_string">Чтобы сохранить фото профиля, приложению нужен доступ к хранилищу вашего устройства. Ваши файлы не будут переданы третьим лицам.</string>
 </resources>

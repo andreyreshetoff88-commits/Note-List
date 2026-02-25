@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.core.Constants.PASSWORD_REGEX
 import com.example.core.State
-import com.example.core.base.BaseBaseFragmentFragment
+import com.example.core.base.BaseBottomSheetDialogFragment
 import com.example.domain.models.UserModel
 import com.example.presintation.databinding.FragmentRegisterBottomSheetBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RegisterBottomSheetFragment : BaseBaseFragmentFragment<FragmentRegisterBottomSheetBinding>() {
+class RegisterBottomSheetFragment : BaseBottomSheetDialogFragment<FragmentRegisterBottomSheetBinding>() {
     private val viewModel: RegisterViewModel by viewModels()
 
     override fun inflaterViewBinding(

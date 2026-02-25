@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_rounded_top"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/default_indent"
+    tools:context=".fragment.changeuserphotobottomsheetdialogfragment.ChangeUserPhotoBottomSheetDialogFragment">
+
+    <TextView
+        android:id="@+id/tv_chang_photo_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_photo_from_list_string"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/default_text_size" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_users_photos"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="@dimen/small_indent"
+        android:paddingHorizontal="@dimen/small_indent"
+        app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+        tools:listitem="@layout/image_item" />
+
+</LinearLayout>

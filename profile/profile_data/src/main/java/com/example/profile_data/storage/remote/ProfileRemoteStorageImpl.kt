@@ -1,5 +1,7 @@
-package com.example.profile_data.storage
+package com.example.profile_data.storage.remote
 
+import android.net.Uri
+import com.example.core.cloudinary.CloudinaryUploader
 import com.example.core.Constants.NODE_USERS
 import com.example.core.UserSession
 import com.google.firebase.auth.EmailAuthProvider
@@ -7,13 +9,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class ProfileStorageImpl @Inject constructor(
+class ProfileRemoteStorageImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: DatabaseReference,
-    private val userSession: UserSession
-) : ProfileStorage {
+    private val userSession: UserSession,
+    private val cloudinaryUploader: CloudinaryUploader
+) : ProfileRemoteStorage {
     override suspend fun editFirstName(firstName: String): Result<Unit> =
         suspendCancellableCoroutine { cont ->
             val userRef = firebaseDatabase.child(NODE_USERS)
@@ -51,6 +55,23 @@ class ProfileStorageImpl @Inject constructor(
                 userRef.onDisconnect()
             }
         }
+
+    override suspend fun changeUserPhoto(uri: Uri): Result<Unit> {
+        return try {
+            val imageUrl = cloudinaryUploader.uploadImage(
+                uri = uri,
+                preset = "avatar_preset",
+                folderName = "avatar"
+            )
+            firebaseDatabase.child(NODE_USERS)
+                .child(userSession.userId.value!!)
+                .child("userPhoto")
+                .setValue(imageUrl).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     override suspend fun changePassword(oldPassword: String, newPassword: String): Result<Unit> =
         suspendCancellableCoroutine { cont ->

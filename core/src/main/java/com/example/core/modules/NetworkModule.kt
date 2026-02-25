@@ -1,5 +1,6 @@
 package com.example.core.modules
 
+import com.example.core.cloudinary.CloudinaryUploader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
@@ -18,4 +19,8 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideFirebaseDatabase() = FirebaseDatabase.getInstance().reference
+
+    @Singleton
+    @Provides
+    fun provideCloudinaryUploader() = CloudinaryUploader()
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.core.State
 import com.example.profile_domain.models.UserModel
 import com.example.profile_domain.usecase.ChangePasswordUseCase
+import com.example.profile_domain.usecase.ChangeUserPhotoUseCase
 import com.example.profile_domain.usecase.EditFirstNameUseCase
 import com.example.profile_domain.usecase.EditLastNameUseCase
 import com.example.profile_domain.usecase.GetUserInfoUseCase
@@ -26,7 +27,8 @@ class ProfileViewModel @Inject constructor(
     getUserInfoUseCase: GetUserInfoUseCase,
     private val editFirstNameUseCase: EditFirstNameUseCase,
     private val editLastNameUseCase: EditLastNameUseCase,
-    private val changePasswordUseCase: ChangePasswordUseCase
+    private val changePasswordUseCase: ChangePasswordUseCase,
+    private val changeUserPhotoUseCase: ChangeUserPhotoUseCase
 ) : ViewModel() {
     private var _signOutState = MutableStateFlow<State<Unit>>(State.Empty())
     val signOutState: StateFlow<State<Unit>> get() = _signOutState
@@ -34,6 +36,8 @@ class ProfileViewModel @Inject constructor(
     val editUserInfoState: StateFlow<State<Unit>> get() = _editUserInfoState
     private var _changePasswordState = MutableStateFlow<State<Unit>>(State.Empty())
     val changePasswordState: StateFlow<State<Unit>> get() = _changePasswordState
+    private var _changeUserPhotoState = MutableStateFlow<State<Unit>>(State.Empty())
+    val changeUserPhotoState: StateFlow<State<Unit>> get() = _changeUserPhotoState
     val userInfoState: StateFlow<State<UserModel>> = getUserInfoUseCase.execute().map { resource ->
         when (resource) {
             is Resource.Loading -> State.Loading()
@@ -82,6 +86,16 @@ class ProfileViewModel @Inject constructor(
                 is Resource.Loading -> _signOutState.value = State.Loading()
                 is Resource.Success -> _signOutState.value = State.Success(data = it.data)
                 is Resource.Error -> _signOutState.value = State.Error(message = it.message)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    suspend fun changeUserPhoto(uri: String) {
+        changeUserPhotoUseCase.execute(uri = uri).onEach {
+            when (it) {
+                is Resource.Loading -> _changeUserPhotoState.value = State.Loading()
+                is Resource.Success -> _changeUserPhotoState.value = State.Success(data = it.data)
+                is Resource.Error -> _changeUserPhotoState.value = State.Error(message = it.message)
             }
         }.launchIn(viewModelScope)
     }

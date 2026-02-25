@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class BaseBaseFragmentFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
@@ -27,8 +26,8 @@ abstract class BaseBaseFragmentFragment<VB : ViewBinding> : BottomSheetDialogFra
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         initFields()
         initFlow()
     }

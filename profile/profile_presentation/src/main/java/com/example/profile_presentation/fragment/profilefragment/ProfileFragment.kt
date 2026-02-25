@@ -1,12 +1,16 @@
 package com.example.profile_presentation.fragment.profilefragment
 
 import android.content.Context
+import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupWindow
 import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,14 +19,15 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.core.Constants.PASSWORD_REGEX
 import com.example.core.State
+import com.example.core.base.BaseFragment
 import com.example.core.showToast
+import com.example.profile_presentation.R
 import com.example.profile_presentation.databinding.DialogChangePasswordBinding
 import com.example.profile_presentation.databinding.DialogEditDisplayNameBinding
 import com.example.profile_presentation.databinding.DialogSignOutBinding
 import com.example.profile_presentation.databinding.FragmentProfileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import com.example.core.base.BaseFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -39,9 +44,36 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override fun initFlow() {
         initSignOutFlow()
         initUserInfoFlow()
+        initChangeUserPhotoFlow()
+    }
+
+    private fun initChangeUserPhotoFlow() {
+        viewModel.changeUserPhotoState.onEach {
+            when (it) {
+                is State.Empty -> showUI()
+                is State.Loading -> showProgressBar()
+                is State.Success -> showUI()
+                is State.Error -> {
+                    showUI()
+                    showToast(message = it.message.toString())
+                }
+            }
+        }.launchIn(lifecycleScope)
     }
 
     override fun initFields() = with(binding) {
+        setFragmentResultListener("SELECTED_IMAGE_REQUEST") { _, bundle ->
+            val uriString =
+                bundle.getString("SELECTED_IMAGE_URI") ?: return@setFragmentResultListener
+            openCropper(uriString)
+        }
+
+        setFragmentResultListener("CROP_AVATAR_REQUEST") { _, bundle ->
+            val uriString =
+                bundle.getString("CROPPED_AVATAR_URI") ?: return@setFragmentResultListener
+            uploadAvatar(uriString.toUri())
+        }
+
         btnExit.setOnClickListener {
             showLogoutDialog()
         }
@@ -56,6 +88,52 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         btnEditLastNameProfile.setOnClickListener {
             showEditLastNameDialog()
+        }
+        btnChangeUserPhoto.setOnClickListener {
+            showChangePhotoMenu(it)
+        }
+    }
+
+    private fun showChangePhotoMenu(anchor: View) {
+        val popupView = layoutInflater.inflate(
+            R.layout.popup_change_photo,
+            null
+        )
+
+        val popupWindow = PopupWindow(
+            popupView,
+            600,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        ).apply {
+            elevation = 20f
+            animationStyle = R.style.PopupAnimation
+            isOutsideTouchable = true
+        }
+
+        popupView.findViewById<View>(R.id.btnGallery).setOnClickListener {
+            popupWindow.dismiss()
+            findNavController().navigate(R.id.changeUserPhotoBottomSheetDialogFragment)
+        }
+
+        popupView.findViewById<View>(R.id.btnCamera).setOnClickListener {
+            popupWindow.dismiss()
+            findNavController().navigate(R.id.cameraXFragment)
+        }
+
+        popupWindow.showAsDropDown(anchor, -570, -40)
+    }
+
+    private fun openCropper(uriString: String) {
+        val bundle = Bundle().apply {
+            putString("imageUri", uriString)
+        }
+        findNavController().navigate(R.id.cropAvatarFragment, bundle)
+    }
+
+    private fun uploadAvatar(uri: Uri) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.changeUserPhoto(uri.toString())
         }
     }
 
