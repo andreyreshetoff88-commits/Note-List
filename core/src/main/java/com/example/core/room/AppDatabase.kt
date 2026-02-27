@@ -5,12 +5,14 @@ import androidx.room.RoomDatabase
 import com.example.core.room.dao.ChatMessageDao
 import com.example.core.room.dao.GroupDao
 import com.example.core.room.dao.PurchaseDao
+import com.example.core.room.dao.RequestDao
 import com.example.core.room.dao.TodoDao
 import com.example.core.room.dao.UserDao
 import com.example.core.room.dao.UserProfileDao
 import com.example.core.room.entitys.ChatMessageEntity
 import com.example.core.room.entitys.GroupEntity
 import com.example.core.room.entitys.PurchaseEntity
+import com.example.core.room.entitys.RequestEntity
 import com.example.core.room.entitys.TodoEntity
 import com.example.core.room.entitys.UserEntity
 import com.example.core.room.entitys.UserProfileEntity
@@ -22,9 +24,10 @@ import com.example.core.room.entitys.UserProfileEntity
         PurchaseEntity::class,
         TodoEntity::class,
         ChatMessageEntity::class,
-        UserProfileEntity::class
+        UserProfileEntity::class,
+        RequestEntity::class
     ],
-    version = 2
+    version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -33,4 +36,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun chatMessageDao(): ChatMessageDao
     abstract fun purchaseDao(): PurchaseDao
     abstract fun todoDao(): TodoDao
+    abstract fun requestDao(): RequestDao
 }

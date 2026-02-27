@@ -23,6 +23,9 @@ interface UserDao {
     @Query("SELECT * FROM users_friend WHERE ownerUserId = :ownerUserId")
     fun getUserByOwnerId(ownerUserId: String): Flow<UserEntity?>
 
+    @Query("SELECT id FROM users_friend WHERE ownerUserId = :ownerUserId")
+    suspend fun getUserFriendsIds(ownerUserId: String): List<String>
+
     @Delete
     suspend fun deleteUser(user: UserEntity)
 

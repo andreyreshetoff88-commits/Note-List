@@ -7,6 +7,7 @@ import com.example.core.room.AppDatabase
 import com.example.core.room.dao.ChatMessageDao
 import com.example.core.room.dao.GroupDao
 import com.example.core.room.dao.PurchaseDao
+import com.example.core.room.dao.RequestDao
 import com.example.core.room.dao.TodoDao
 import com.example.core.room.dao.UserDao
 import com.example.core.room.dao.UserProfileDao
@@ -61,4 +62,7 @@ object LocalModule {
 
     @Provides
     fun provideChatMessageDao(db: AppDatabase): ChatMessageDao = db.chatMessageDao()
+
+    @Provides
+    fun provideRequestDao(db: AppDatabase): RequestDao = db.requestDao()
 }

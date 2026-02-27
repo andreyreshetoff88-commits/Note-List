@@ -2,6 +2,7 @@ package com.example.app_data.remote
 
 import com.example.app_data.models.UserModelDto
 import com.example.app_data.utils.SyncEvent
+import com.example.core.Constants.NODE_FRIEND_REQUESTS
 import com.example.core.Constants.NODE_USERS
 import com.example.core.Constants.NODE_USERS_FRIENDS
 import com.example.core.UserSession
@@ -62,10 +63,7 @@ class MainRemoteStorageImpl @Inject constructor(
 
     override fun observeUsersFriends(userId: String): Flow<SyncEvent> = callbackFlow {
         val listener = object : ChildEventListener {
-            override fun onChildAdded(
-                snapshot: DataSnapshot,
-                previousChildName: String?
-            ) {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val friendId = snapshot.key ?: return
                 trySend(SyncEvent.FriendAdded(friendId = friendId, userId = userId))
             }
@@ -75,20 +73,12 @@ class MainRemoteStorageImpl @Inject constructor(
                 trySend(SyncEvent.FriendDelete(friendId = friendId, userId = userId))
             }
 
-            override fun onChildChanged(
-                snapshot: DataSnapshot,
-                previousChildName: String?
-            ) = Unit
-
-            override fun onChildMoved(
-                snapshot: DataSnapshot,
-                previousChildName: String?
-            ) = Unit
-
             override fun onCancelled(error: DatabaseError) {
                 close(error.toException())
             }
 
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) = Unit
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) = Unit
         }
 
         firebaseDatabase.child(NODE_USERS_FRIENDS).child(userId)
@@ -102,5 +92,64 @@ class MainRemoteStorageImpl @Inject constructor(
             .child(userId).get().await()
 
         return snapshot.getValue(UserModelDto::class.java)
+    }
+
+    override suspend fun observeFriendRequests(userId: String): Flow<SyncEvent> = callbackFlow {
+        val listener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val senderId = snapshot.key ?: return
+                trySend(SyncEvent.FriendRequestAdded(recipientId = userId, senderId = senderId))
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val senderId = snapshot.key ?: return
+                trySend(SyncEvent.FriendRequestRemoved(recipientId = userId, senderId = senderId))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                close(error.toException())
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) = Unit
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) = Unit
+        }
+
+        firebaseDatabase.child(NODE_FRIEND_REQUESTS).child(userId)
+            .addChildEventListener(listener)
+
+        awaitClose {
+            firebaseDatabase.child(NODE_FRIEND_REQUESTS).child(userId)
+                .removeEventListener(listener)
+        }
+    }
+
+    override suspend fun getAllUserFriendsIds(userId: String): List<String> {
+        val snapshot = firebaseDatabase
+            .child(NODE_USERS_FRIENDS)
+            .child(userId)
+            .get()
+            .await()
+
+        return snapshot.children.mapNotNull { it.key }
+    }
+
+    override suspend fun getAllFriendRequests(userId: String): List<String> {
+        val snapshot = firebaseDatabase
+            .child(NODE_FRIEND_REQUESTS)
+            .child(userId)
+            .get()
+            .await()
+
+        return snapshot.children.mapNotNull { it.key }
+    }
+
+    override suspend fun getUserFriendsIds(userId: String): List<String> {
+        val snapshot = firebaseDatabase
+            .child(NODE_USERS_FRIENDS)
+            .child(userId)
+            .get()
+            .await()
+
+        return snapshot.children.mapNotNull { it.key }
     }
 }

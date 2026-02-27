@@ -7,5 +7,6 @@ object Constants {
     const val NODE_USERS = "users"
     const val NODE_GROUPS = "groups"
     const val NODE_USERS_FRIENDS = "usersFriends"
+    const val NODE_FRIEND_REQUESTS = "FriendRequests"
     const val NODE_USERS_GROUPS = "usersGroups"
 }
