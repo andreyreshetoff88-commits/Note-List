@@ -94,10 +94,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
 
         binding.btnCamera.setOnClickListener {
+            binding.motionLayout.transitionToStart()
             findNavController().navigate(R.id.action_profileFragment_to_cameraXFragment)
         }
 
         binding.btnGallery.setOnClickListener {
+            binding.motionLayout.transitionToStart()
             findNavController().navigate(R.id.action_profileFragment_to_changeUserPhotoBottomSheetDialogFragment)
         }
 
