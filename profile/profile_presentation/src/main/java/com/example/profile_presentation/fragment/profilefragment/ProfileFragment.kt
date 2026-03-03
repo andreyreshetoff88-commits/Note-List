@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.PopupWindow
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
@@ -62,6 +64,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     override fun initFields() = with(binding) {
+        initMotionLayout()
         setFragmentResultListener("SELECTED_IMAGE_REQUEST") { _, bundle ->
             val uriString =
                 bundle.getString("SELECTED_IMAGE_URI") ?: return@setFragmentResultListener
@@ -89,39 +92,100 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         btnEditLastNameProfile.setOnClickListener {
             showEditLastNameDialog()
         }
-        btnChangeUserPhoto.setOnClickListener {
-            showChangePhotoMenu(it)
+
+        binding.btnCamera.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_cameraXFragment)
+        }
+
+        binding.btnGallery.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_changeUserPhotoBottomSheetDialogFragment)
+        }
+
+        binding.btnClose.setOnClickListener {
+            binding.motionLayout.transitionToStart()
         }
     }
 
-    private fun showChangePhotoMenu(anchor: View) {
-        val popupView = layoutInflater.inflate(
-            R.layout.popup_change_photo,
-            null
-        )
+    private fun initMotionLayout() {
+        binding.motionLayout.addTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionCompleted(
+                motionLayout: MotionLayout?,
+                currentId: Int
+            ) {
+            }
 
-        val popupWindow = PopupWindow(
-            popupView,
-            600,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        ).apply {
-            elevation = 20f
-            animationStyle = R.style.PopupAnimation
-            isOutsideTouchable = true
-        }
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
 
-        popupView.findViewById<View>(R.id.btnGallery).setOnClickListener {
-            popupWindow.dismiss()
-            findNavController().navigate(R.id.changeUserPhotoBottomSheetDialogFragment)
-        }
+            }
 
-        popupView.findViewById<View>(R.id.btnCamera).setOnClickListener {
-            popupWindow.dismiss()
-            findNavController().navigate(R.id.cameraXFragment)
-        }
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+                if (progress == 0f)
+                    binding.menuContent.visibility = View.GONE
+                else
+                    binding.menuContent.visibility = View.VISIBLE
 
-        popupWindow.showAsDropDown(anchor, -570, -40)
+                val iconStart = 0.0f
+                val iconEnd = 0.4f
+
+                val iconAlpha = when {
+                    progress <= iconStart -> 1f
+                    progress >= iconEnd -> 0f
+                    else -> {
+                        val t = (progress - iconStart) / (iconEnd - iconStart)
+                        val smooth = t * t * (3 - 2 * t) // smoothstep
+                        1f - smooth
+                    }
+                }
+
+                binding.photoIcon.alpha = iconAlpha
+                binding.photoIcon.scaleX = 0.7f + 0.3f * iconAlpha
+                binding.photoIcon.scaleY = 0.7f + 0.3f * iconAlpha
+
+                val menuStart = 0.4f
+                val menuEnd = 0.9f
+
+                val menuAlpha = when {
+                    progress <= menuStart -> 0f
+                    progress >= menuEnd -> 1f
+                    else -> {
+                        val t = (progress - menuStart) / (menuEnd - menuStart)
+                        t * t * (3 - 2 * t) // smoothstep
+                    }
+                }
+
+                binding.menuContent.alpha = menuAlpha
+                binding.menuContent.scaleX = 0.9f + 0.1f * menuAlpha
+                binding.menuContent.scaleY = 0.9f + 0.1f * menuAlpha
+
+                val startColor = "#FFA08D5F".toColorInt()
+                val endColor = "#FF363433".toColorInt()
+                val backgroundColor = ColorUtils.blendARGB(
+                    startColor,
+                    endColor,
+                    progress
+                )
+
+                binding.photoMenuContainer.setCardBackgroundColor(backgroundColor)
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+            }
+
+        })
     }
 
     private fun openCropper(uriString: String) {

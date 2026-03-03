@@ -3,8 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.profile_presentation.view.AvatarCropView
-        android:id="@+id/avatarCropView"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <com.canhub.cropper.CropImageView
+        android:id="@+id/crop_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

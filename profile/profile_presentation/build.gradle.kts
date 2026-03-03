@@ -66,6 +66,9 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
     implementation(libs.guava)
 
+    //cropper
+    implementation("com.vanniktech:android-image-cropper:4.7.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

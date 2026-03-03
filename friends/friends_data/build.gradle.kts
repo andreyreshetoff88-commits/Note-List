@@ -37,7 +37,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":profile:profile_domain"))
+    implementation(project(":friends:friends_domain"))
 
     //hilt
     implementation(libs.hilt.android)

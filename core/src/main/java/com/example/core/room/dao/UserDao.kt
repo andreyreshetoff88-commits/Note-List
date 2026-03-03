@@ -21,7 +21,10 @@ interface UserDao {
     fun getUserById(ownerUserId: String, userId: String): Flow<UserEntity?>
 
     @Query("SELECT * FROM users_friend WHERE ownerUserId = :ownerUserId")
-    fun getUserByOwnerId(ownerUserId: String): Flow<UserEntity?>
+    suspend fun getUserByOwnerIdOnce(ownerUserId: String): List<UserEntity>
+
+    @Query("SELECT * FROM users_friend WHERE ownerUserId = :ownerUserId")
+    fun getUserByOwnerId(ownerUserId: String): Flow<List<UserEntity>>
 
     @Query("SELECT id FROM users_friend WHERE ownerUserId = :ownerUserId")
     suspend fun getUserFriendsIds(ownerUserId: String): List<String>

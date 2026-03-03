@@ -72,7 +72,8 @@ class MainLocalStorageImpl @Inject constructor(
         requestDao.deleteRequest(recipientId = recipientId, senderId = senderId)
     }
 
-    override suspend fun getRequestsOnce(recipientId: String) = requestDao.getRequestsOnce(recipientId)
+    override suspend fun getRequestsOnce(recipientId: String) =
+        requestDao.getRequestsOnce(recipientId)
 
     override suspend fun getUserFriendsIds(userId: String) =
         userDao.getUserFriendsIds(ownerUserId = userId)

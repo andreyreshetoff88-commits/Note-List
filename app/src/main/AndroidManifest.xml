@@ -25,6 +25,7 @@
         android:theme="@style/Theme.NoteList">
         <activity
             android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
