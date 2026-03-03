@@ -17,4 +17,6 @@
     <string name="choice_from_gallery">Выбрать из галереи</string>
     <string name="wy_we_need_camera_permission_message_string">Чтобы сделать фото профиля, приложению нужен доступ к камере вашего устройства. Ваши изображения не будут переданы третьим лицам.</string>
     <string name="wy_we_need_storage_permission_message_string">Чтобы сохранить фото профиля, приложению нужен доступ к хранилищу вашего устройства. Ваши файлы не будут переданы третьим лицам.</string>
+    <string name="close_string">Закрыть</string>
+    <string name="choice_method_string">Выберите действие</string>
 </resources>
