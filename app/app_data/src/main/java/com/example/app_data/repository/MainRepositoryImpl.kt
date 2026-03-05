@@ -1,7 +1,7 @@
 package com.example.app_data.repository
 
-import com.example.app_data.local.MainLocalStorage
-import com.example.app_data.remote.MainRemoteStorage
+import com.example.app_data.storage.local.MainLocalStorage
+import com.example.app_data.storage.remote.MainRemoteStorage
 import com.example.app_data.utils.SyncEvent
 import com.example.app_domain.repository.MainRepository
 import com.example.core.UserSession

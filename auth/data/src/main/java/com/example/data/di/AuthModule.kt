@@ -1,9 +1,12 @@
 package com.example.data.di
 
 import com.example.core.UserSession
+import com.example.core.room.dao.UserProfileDao
 import com.example.data.repository.AuthRepositoryImpl
-import com.example.data.storage.AuthStorage
-import com.example.data.storage.AuthStorageImpl
+import com.example.data.storage.local.AuthLocalStorage
+import com.example.data.storage.local.AuthLocalStorageImpl
+import com.example.data.storage.remote.AuthStorage
+import com.example.data.storage.remote.AuthStorageImpl
 import com.example.domain.repository.AuthRepository
 import com.example.domain.usecase.CheckVerifyUseCase
 import com.example.domain.usecase.LoginUserUseCase
@@ -32,8 +35,19 @@ class AuthModule {
     }
 
     @Provides
-    fun provideAuthRepository(authStorage: AuthStorage): AuthRepository {
-        return AuthRepositoryImpl(authStorage = authStorage)
+    fun provideAuthLocalStorage(userProfileDao: UserProfileDao): AuthLocalStorage {
+        return AuthLocalStorageImpl(userProfileDao = userProfileDao)
+    }
+
+    @Provides
+    fun provideAuthRepository(
+        authStorage: AuthStorage,
+        authLocalStorage: AuthLocalStorage
+    ): AuthRepository {
+        return AuthRepositoryImpl(
+            authStorage = authStorage,
+            authLocalStorage = authLocalStorage
+        )
     }
 
     @Provides

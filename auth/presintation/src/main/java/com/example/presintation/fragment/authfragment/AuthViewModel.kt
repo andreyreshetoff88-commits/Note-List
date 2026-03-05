@@ -18,18 +18,15 @@ class AuthViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
     private val checkVerifyUseCase: CheckVerifyUseCase
 ) : ViewModel() {
-    private var _viewState = MutableStateFlow<State<Boolean>>(State.Empty())
-    val viewState: StateFlow<State<Boolean>> get() = _viewState
+    private var _viewState = MutableStateFlow<State<Unit>>(State.Empty())
+    val viewState: StateFlow<State<Unit>> get() = _viewState
 
-    suspend fun loginUser(email: String, password: String) {
+    fun loginUser(email: String, password: String) {
         loginUserUseCase.execute(email = email, password = password).onEach {
             when (it) {
                 is Resource.Loading -> _viewState.value = State.Loading()
                 is Resource.Success -> {
-                    if (it.data == null)
-                        _viewState.value = State.Empty()
-                    else
-                        _viewState.value = State.Success(data = it.data)
+                    _viewState.value = State.Success(Unit)
                 }
 
                 is Resource.Error -> _viewState.value = State.Error(message = it.message)

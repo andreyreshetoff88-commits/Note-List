@@ -1,6 +1,5 @@
 package com.example.presintation.fragment.registerfragment
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.State
@@ -16,22 +15,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerUserUseCase: RegisterUserUseCase,
+    private val registerUserUseCase: RegisterUserUseCase
 ) : ViewModel() {
-    private var _viewState = MutableStateFlow<State<Boolean>>(State.Empty())
-    val viewState: StateFlow<State<Boolean>> get() = _viewState
+    private var _viewState = MutableStateFlow<State<Unit>>(State.Empty())
+    val viewState: StateFlow<State<Unit>> get() = _viewState
 
-
-    suspend fun registerUser(userModel: UserModel, password: String) {
+    fun registerUser(userModel: UserModel, password: String) {
         registerUserUseCase.execute(userModel = userModel, password = password)
             .onEach { registerState ->
                 when (registerState) {
                     is Resource.Loading -> _viewState.value = State.Loading()
                     is Resource.Success -> {
-                        if (registerState.data == true) {
-                            Log.d("ololo", "registerUser: ${registerState.data}")
-                            _viewState.value = State.Success(data = true)
-                        }
+                        _viewState.value = State.Success(Unit)
                     }
 
                     is Resource.Error -> _viewState.value =

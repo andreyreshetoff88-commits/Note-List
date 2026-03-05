@@ -1,4 +1,4 @@
-package com.example.app_data.remote
+package com.example.app_data.storage.remote
 
 import com.example.app_data.models.UserModelDto
 import com.example.app_data.utils.SyncEvent

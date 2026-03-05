@@ -1,15 +1,16 @@
 package com.example.verify_email_presentation.fragment.verifyemailfragment
 
+import android.annotation.SuppressLint
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.core.base.BaseFragment
 import com.example.verify_email_presentation.R
 import com.example.verify_email_presentation.databinding.FragmentVerifyEmailBinding
 import dagger.hilt.android.AndroidEntryPoint
-import com.example.core.base.BaseFragment
 
 @AndroidEntryPoint
 class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding>() {
@@ -45,6 +46,7 @@ class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding>() {
         timer?.cancel()
 
         timer = object : CountDownTimer(30000, 1000) {
+            @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 val seconds = millisUntilFinished / 1000
                 binding.btnResend.text = getString(R.string.resend_in_string) + " $seconds с"

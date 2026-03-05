@@ -1,4 +1,4 @@
-package com.example.app_data.local
+package com.example.app_data.storage.local
 
 import com.example.app_data.models.UserModelDto
 import com.example.app_data.utils.mapToEntity
@@ -15,8 +15,8 @@ class MainLocalStorageImpl @Inject constructor(
     private val userDao: UserDao,
     private val requestDao: RequestDao
 ) : MainLocalStorage {
-    override suspend fun syncUserProfile(remoteUserData: UserModelDto) {
-        if (!remoteUserData.id.isNullOrEmpty()) {
+    override suspend fun syncUserProfile(remoteUserData: UserModelDto?) {
+        if (!remoteUserData?.id.isNullOrEmpty()) {
             val localUserData = userProfileDao.getUserById(remoteUserData.id!!).first()
             val entity = remoteUserData.mapToEntity()
 

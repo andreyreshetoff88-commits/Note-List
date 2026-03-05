@@ -1,9 +1,9 @@
 package com.example.app_data.di
 
-import com.example.app_data.local.MainLocalStorage
-import com.example.app_data.local.MainLocalStorageImpl
-import com.example.app_data.remote.MainRemoteStorage
-import com.example.app_data.remote.MainRemoteStorageImpl
+import com.example.app_data.storage.local.MainLocalStorage
+import com.example.app_data.storage.local.MainLocalStorageImpl
+import com.example.app_data.storage.remote.MainRemoteStorage
+import com.example.app_data.storage.remote.MainRemoteStorageImpl
 import com.example.app_data.repository.MainRepositoryImpl
 import com.example.app_domain.repository.MainRepository
 import com.example.core.UserSession

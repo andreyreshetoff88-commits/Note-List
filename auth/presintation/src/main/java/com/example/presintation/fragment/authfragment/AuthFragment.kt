@@ -13,13 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.core.Constants.PASSWORD_REGEX
 import com.example.core.State
+import com.example.core.base.BaseFragment
 import com.example.presintation.R
 import com.example.presintation.databinding.FragmentAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
-import com.example.core.base.BaseFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AuthFragment : BaseFragment<FragmentAuthBinding>() {
@@ -47,8 +46,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
 
                 is State.Success -> {
                     val uri =
-                        if (viewModel.checkVerifyEmail())
-                            "notelist://groups".toUri()
+                        if (viewModel.checkVerifyEmail()) "notelist://groups".toUri()
                         else "notelist://verify_email".toUri()
                     findNavController().popBackStack()
                     findNavController().navigate(uri)
@@ -100,9 +98,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
             }
 
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
-            lifecycleScope.launch {
-                viewModel.loginUser(email = email, password = password)
-            }
+            viewModel.loginUser(email = email, password = password)
         }
     }
 

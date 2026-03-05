@@ -19,10 +19,10 @@ import com.example.presintation.databinding.FragmentRegisterBottomSheetBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RegisterBottomSheetFragment : BaseBottomSheetDialogFragment<FragmentRegisterBottomSheetBinding>() {
+class RegisterBottomSheetFragment :
+    BaseBottomSheetDialogFragment<FragmentRegisterBottomSheetBinding>() {
     private val viewModel: RegisterViewModel by viewModels()
 
     override fun inflaterViewBinding(
@@ -96,15 +96,13 @@ class RegisterBottomSheetFragment : BaseBottomSheetDialogFragment<FragmentRegist
                     val lastName = etEnterLastName.text.toString().trim()
                     val email = etEnterEmail.text.toString().trim()
                     val password = etEnterPassword.text.toString().trim()
-                    lifecycleScope.launch {
-                        viewModel.registerUser(
-                            userModel = UserModel(
-                                firstName = firstName,
-                                lastName = lastName,
-                                email = email
-                            ), password = password
-                        )
-                    }
+                    viewModel.registerUser(
+                        userModel = UserModel(
+                            firstName = firstName,
+                            lastName = lastName,
+                            email = email
+                        ), password = password
+                    )
                 } else
                     tltConfirmPassword.error = "Пароли не совпадают"
             }

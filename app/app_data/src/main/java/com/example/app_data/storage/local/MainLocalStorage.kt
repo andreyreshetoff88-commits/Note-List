@@ -1,10 +1,10 @@
-package com.example.app_data.local
+package com.example.app_data.storage.local
 
 import com.example.app_data.models.UserModelDto
 import com.example.core.room.entitys.RequestEntity
 
 interface MainLocalStorage {
-    suspend fun syncUserProfile(remoteUserData: UserModelDto)
+    suspend fun syncUserProfile(remoteUserData: UserModelDto?)
     suspend fun syncFriendAdded(friendId: String, userId: String, friendUserData: UserModelDto?)
     suspend fun syncFriendDelete(friendId: String, userId: String)
     suspend fun syncFriendRequestAdded(requestEntity: RequestEntity)
